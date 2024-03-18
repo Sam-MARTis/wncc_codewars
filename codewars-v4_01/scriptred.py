@@ -2,7 +2,7 @@ import random
 import math
 
 
-name = "scriptblue"
+name = "Sam"
 units = 10
 islands = ["island1", "island2", "island3"]
 game_clock = 0
@@ -78,9 +78,9 @@ def ActTeam(team):
     s = team.getTeamSignal()
     global game_clock
 
-    team.buildWalls(1)
-    team.buildWalls(2)
-    team.buildWalls(3)
+    # team.buildWalls(1)
+    # team.buildWalls(2)
+    # team.buildWalls(3)
     
  
     game_clock+=1

@@ -1,8 +1,60 @@
-from random import randint 
+panav
+SATURDAY
+How did the competition go?
+03:06
+Panav ya' been?
+How did the competition go?
+4/10
+18:57
+Our thing barely flew
+18:57
+It glided at max
+18:57
+But I had so much fun
+18:57
+And we're planning to build so many more
+18:57
+We have the design of the next one in production already
+18:58
+Hey has the link of the code wars thing come out
+21:38
+Could you send it please
+21:38
+You
+But I had so much fun
+That’s what matters afterall
+23:10
+You
+We have the design of the next one in production already
+Amazing
+23:10
+YESTERDAY
+You
+Hey has the link of the code wars thing come out
+I have no idea what’s on about that
+01:32
+Are you back?
+11:14
+Yup
+13:54
+Came back at 9 am
+13:55
+Ooo nice
+14:38
+You
+Hey has the link of the code wars thing come out
+did you get all the resources?
+17:51
+Yup
+18:02
+TODAY
+import random
+import math
 
-name = 'sample4'
+name = "scriptblue"
 
-def moveTo(x , y , Pirate):
+
+def moveTo(x, y, Pirate):
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
         return 0
@@ -10,88 +62,40 @@ def moveTo(x , y , Pirate):
         return (position[1] < y) * 2 + 1
     if position[1] == y:
         return (position[0] > x) * 2 + 2
-    if randint(1, 2) == 1:
+    if random.randint(1, 2) == 1:
         return (position[0] > x) * 2 + 2
     else:
         return (position[1] < y) * 2 + 1
-    
-def checkfriends(pirate , quad ):
-    sum = 0 
-    up = pirate.investigate_up()
-    down = pirate.investigate_down()
-    left = pirate.investigate_left()
-    right = pirate.investigate_right()
-    ne = pirate.investigate_ne()
-    nw = pirate.investigate_nw()
-    se = pirate.investigate_se()
-    sw = pirate.investigate_sw()
-    
-    if(quad=='ne'):
-        if(up == 'friend'):
-            sum +=1 
-        if(ne== 'friend'):
-            sum +=1 
-        if(right == 'friend'):
-            sum +=1 
-    if(quad=='se'):
-        if(down == 'friend'):
-            sum +=1 
-        if(right== 'friend'):
-            sum +=1 
-        if(se == 'friend'):
-            sum +=1 
-    if(quad=='sw'):
-        if(down == 'friend'):
-            sum +=1 
-        if(sw== 'friend'): 
-            sum +=1 
-        if(left == 'friend'):
-            sum +=1 
-    if(quad=='nw'):
-        if(up == 'friend'):
-            sum +=1 
-        if(nw == 'friend'):
-            sum +=1 
-        if(left == 'friend'):
-            sum +=1 
 
-    return sum
-    
-def spread(pirate):
-    sw = checkfriends(pirate ,'sw' )
-    se = checkfriends(pirate ,'se' )
-    ne = checkfriends(pirate ,'ne' )
-    nw = checkfriends(pirate ,'nw' )
-   
-    my_dict = {'sw': sw, 'se': se, 'ne': ne, 'nw': nw}
-    sorted_dict = dict(sorted(my_dict.items(), key=lambda item: item[1]))
+dir = [1 for i in range(40)]
 
-    x, y = pirate.getPosition()
-    
-    if( x == 0 and y == 0):
-        return randint(1,4)
-    
-    if(sorted_dict[list(sorted_dict.keys())[3]] == 0 ):
-        return randint(1,4)
-    
-    if(list(sorted_dict())[0] == 'sw'):
-        return moveTo(x-1 , y+1 , pirate)
-    elif(list(sorted_dict())[0] == 'se'):
-        return moveTo(x+1 , y+1 , pirate)
-    elif(list(sorted_dict())[0] == 'ne'):
-        return moveTo(x+1 , y-1 , pirate)
-    elif(list(sorted_dict())[0] == 'nw'):
-        return moveTo(x-1 , y-1 , pirate)
 
 def ActPirate(pirate):
     up = pirate.investigate_up()[0]
     down = pirate.investigate_down()[0]
     left = pirate.investigate_left()[0]
     right = pirate.investigate_right()[0]
+    ne = pirate.investigate_ne()[0]
+    nw = pirate.investigate_nw()[0]
+    se = pirate.investigate_se()[0]
+    sw = pirate.investigate_sw()[0]
+    current = pirate.investigate_current()[0]
+
+    # print(type(pirate.getID()))
+    id = 0
+    try:
+        # print(type(int(pirate.getID())))
+        id = int(pirate.getID())
+    except:
+        id = 0
+    
+    
+    
+
     x, y = pirate.getPosition()
     pirate.setSignal("")
     s = pirate.trackPlayers()
-    
+
     if (
         (up == "island1" and s[0] != "myCaptured")
         or (up == "island2" and s[1] != "myCaptured")
@@ -124,8 +128,23 @@ def ActPirate(pirate):
         s = right[-1] + str(x + 1) + "," + str(y)
         pirate.setTeamSignal(s)
 
+
+    if id > 0 and id <= 40:
+        x, y = pirate.getPosition()
+        print(id, x, y)
+        if y==39:
+            dir[id-1] = 1
+            return moveTo(id, 0, pirate)
+        elif y==0:
+            dir[id-1] = 3
+            return moveTo(id, 39, pirate)
+        else:
+            if dir[id-1] == 3:
+                return moveTo(id, 39, pirate)
+            elif dir[id-1] == 1:
+                return moveTo(id, 0, pirate)
     
-    if pirate.getTeamSignal() != "":
+    elif pirate.getTeamSignal() != "" and id!=0 and id%4==0:
         s = pirate.getTeamSignal()
         l = s.split(",")
         x = int(l[0][1:])
@@ -134,19 +153,29 @@ def ActPirate(pirate):
         return moveTo(x, y, pirate)
 
     else:
-        return spread(pirate)
+        return random.randint(1, 4)
+
+        
+    
 
 
 def ActTeam(team):
     l = team.trackPlayers()
     s = team.getTeamSignal()
 
+    # for i in range(0, team.getTotalPirates()):
+
+
     team.buildWalls(1)
     team.buildWalls(2)
     team.buildWalls(3)
-
+    # print(team.getTeamSignal())
+    # print(team.trackPlayers())
     if s:
         island_no = int(s[0])
         signal = l[island_no - 1]
         if signal == "myCaptured":
             team.setTeamSignal("")
+17:16
+
+
