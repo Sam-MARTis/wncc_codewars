@@ -5,6 +5,7 @@ import math
 name = "scriptblue"
 units = 10
 islands = ["island1", "island2", "island3"]
+game_clock = 0
 
 def moveTo(x, y, Pirate):
     position = Pirate.getPosition()
@@ -23,14 +24,14 @@ def moveTo(x, y, Pirate):
 def ActPirate(pirate):
     try:
         if pirate.randX == None:
-            pirate.randX = 40//units * random.randint(0,units)
+            pirate.randX = 40//units * random.randint(0,units-1)
     except:
-        pirate.randX = 40//units * random.randint(0,units)
+        pirate.randX = 40//units * random.randint(0,units-1)
     try:
         if pirate.randY == None:
-            pirate.randY = 40//units * random.randint(0,units)
+            pirate.randY = 40//units * random.randint(0,units-1)
     except:
-        pirate.randY = 40//units * random.randint(0,units)
+        pirate.randY = 40//units * random.randint(0,units-1)
     up = pirate.investigate_up()[0]
     down = pirate.investigate_down()[0]
     left = pirate.investigate_left()[0]
@@ -85,7 +86,11 @@ def ActPirate(pirate):
         # pirate.setTeamSignal(s)
         pirate.obey=0
         return moveTo(x+1, y, pirate)
-
+    pirate.obey=1
+    global game_clock
+    if game_clock%50 ==0:
+        pirate.randX = 40//units * random.randint(0,units-1)
+        pirate.randY = 40//units * random.randint(0,units-1)
     
     if pirate.getTeamSignal() != "":
         s = pirate.getTeamSignal()
@@ -104,12 +109,17 @@ def ActPirate(pirate):
 def ActTeam(team):
     l = team.trackPlayers()
     s = team.getTeamSignal()
+    global game_clock
 
     team.buildWalls(1)
     team.buildWalls(2)
     team.buildWalls(3)
-    print(f"Team signal is: {team.getTeamSignal()}\n")
-    print(f"Track players: {team.trackPlayers()}\n")
+    
+    # print(f"Team signal is: {team.getTeamSignal()}\n")
+    # print(f"Track players: {team.trackPlayers()}\n")
+    game_clock+=1
+    if game_clock%50==0:
+        print("Changing team signal")
     if s:
         island_no = int(s[0])
         signal = l[island_no - 1]
